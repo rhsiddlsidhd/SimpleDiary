@@ -42,10 +42,6 @@ const DiaryEditor = () => {
           ref={authorInput}
           name="author"
           value={state.author}
-          // onChange={(e) => {
-          //   //아래코드와 비교 기능은 동일 (하지만 ...스프레드 연산자 추천)
-          //   setState({ ...state, author: e.target.value });
-          // }}
           onChange={handleChangeState}
         />
         <div>
@@ -53,9 +49,6 @@ const DiaryEditor = () => {
             ref={contentInput}
             name="content"
             value={state.content}
-            // onChange={(e) => {
-            //   setState({ author: state.author, content: e.target.value });
-            // }}
             onChange={handleChangeState}
           />
         </div>
