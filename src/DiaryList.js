@@ -2,7 +2,6 @@ import DiaryItem from "./DiaryItem";
 
 const DiaryList = ({ diaryList, onRemove, onEdit }) => {
   //프롭 받을때 { } 잊지말자 ^^
-  console.log(diaryList);
 
   return (
     <div className="DiaryList">
