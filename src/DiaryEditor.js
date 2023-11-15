@@ -1,6 +1,6 @@
 import { useRef, useState } from "react";
 
-const DiaryEditor = () => {
+const DiaryEditor = ({ onCraete }) => {
   // ================
   const authorInput = useRef();
   const contentInput = useRef();
@@ -31,7 +31,15 @@ const DiaryEditor = () => {
       contentInput.current.focus();
       return;
     }
+    onCraete(state.author, state.content, state.emotion);
     alert("저장 성공");
+
+    //저장 성공후 웹 화면 초기화를 위해 +추가
+    setState({
+      author: "",
+      content: "",
+      emotion: 1,
+    });
   };
 
   return (
