@@ -1,9 +1,7 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import "./App.css";
 import DiaryEditor from "./DiaryEditor";
 import DiaryList from "./DiaryList";
-import OptimizeTest from "./OptimizeTest";
-import OptimizeTest2 from "./OptimizeTest2";
 
 function App() {
   const [data, setData] = useState([]);
@@ -32,7 +30,7 @@ function App() {
     getDate();
   }, []);
 
-  const onCraete = (author, content, emotion) => {
+  const onCraete = useCallback((author, content, emotion) => {
     const created_date = new Date().getTime();
     const newItem = {
       author,
@@ -43,9 +41,9 @@ function App() {
     };
     dataId.current += 1;
 
-    //새로운 일기가 위로 올라오게 하기 위해
-    return setData([newItem, ...data]);
-  };
+    //함수를 전달
+    return setData((data) => [newItem, ...data]);
+  }, []);
 
   const onRemove = (targetId) => {
     const newDiaryList = data.filter((it) => it.id !== targetId);
@@ -78,8 +76,6 @@ function App() {
   const { goodCount, badCount, goodRatio } = getDiaryAnalysis; //값을 사용
   return (
     <div className="App">
-      <OptimizeTest />
-      <OptimizeTest2 />
       <DiaryEditor onCraete={onCraete} />
       <div>전체 일기 : {data.length}</div>
       <div>기분 좋은 일기 개수 : {goodCount}</div>
