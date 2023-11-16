@@ -1,10 +1,7 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import "./App.css";
 import DiaryEditor from "./DiaryEditor";
 import DiaryList from "./DiaryList";
-
-//jsonplaceholder 에서 무료 API사용
-//https://jsonplaceholder.typicode.com/comments
 
 function App() {
   const [data, setData] = useState([]);
@@ -16,8 +13,6 @@ function App() {
     const res = await fetch(
       `https://jsonplaceholder.typicode.com/comments`
     ).then((res) => res.json());
-    console.log(res);
-
     const initData = res.slice(0, 20).map((it) => {
       return {
         author: it.email,
@@ -30,7 +25,7 @@ function App() {
     setData(initData);
   };
 
-  //API호출확인
+  // //API호출확인
   useEffect(() => {
     getDate();
   }, []);
@@ -64,9 +59,31 @@ function App() {
     );
   };
 
+  const getDiaryAnalysis = useMemo(() => {
+    console.log("일기 분석 시작");
+
+    const goodCount = data.filter((it) => it.emotion >= 3).length;
+
+    const badCount = data.length - goodCount;
+    const goodRatio = (goodCount / data.length) * 100;
+    return { goodCount, badCount, goodRatio };
+  }, [data.length]);
+  // useMemo( ()=>{callback},[] ) dependency array
+  // 실수 많은 부분
+  // useMemo 는 callback 함수가 리턴하는 값을 그냥 리턴을 한다
+  // 그러므로 getDiaryAnalysis 값을 리턴 받게 되는 것
+  // 함수가 아닌 값을 사용하여야 하여 아래와 같이 사용
+
+  //비구조화 할당
+  // const { goodCount, badCount, goodRatio } = getDiaryAnalysis(); //함수사용
+  const { goodCount, badCount, goodRatio } = getDiaryAnalysis; //값을 사용
   return (
     <div className="App">
       <DiaryEditor onCraete={onCraete} />
+      <div>전체 일기 : {data.length}</div>
+      <div>기분 좋은 일기 개수 : {goodCount}</div>
+      <div>기분 나쁜 일기 개수 : {badCount}</div>
+      <div>기분 좋은 일기 비율 : {goodRatio}</div>
       <DiaryList diaryList={data} onRemove={onRemove} onEdit={onEdit} />
     </div>
   );
