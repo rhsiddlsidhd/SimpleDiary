@@ -1,4 +1,5 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useRef, useState } from "react";
+import { DiaryDispatchContext } from "./App";
 
 const DiaryItem = ({
   //아래2개 함수
@@ -8,13 +9,8 @@ const DiaryItem = ({
   created_date,
   emotion,
   id,
-  onRemove,
-  onEdit,
 }) => {
-  useEffect(() => {
-    console.log(`${id}번 째 아이템 렌더!`);
-  });
-
+  const { onRemove, onEdit } = useContext(DiaryDispatchContext);
   const localContentInput = useRef();
   const [isEdit, setIsEdit] = useState(false);
   const toggleIsEdit = () => {
@@ -33,7 +29,6 @@ const DiaryItem = ({
     setIsEdit(false);
     setLocalContent(content);
   };
-
   const handleEdit = () => {
     if (localContent.length < 5) {
       localContentInput.current.focus();

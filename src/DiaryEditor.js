@@ -1,7 +1,10 @@
-import React, { useRef, useState } from "react";
+import React, { useContext, useRef, useState } from "react";
+import { DiaryDispatchContext } from "./App";
 
-const DiaryEditor = ({ onCraete }) => {
+const DiaryEditor = () => {
   // ================
+
+  const { onCreate } = useContext(DiaryDispatchContext);
 
   const authorInput = useRef();
   const contentInput = useRef();
@@ -32,7 +35,7 @@ const DiaryEditor = ({ onCraete }) => {
       contentInput.current.focus();
       return;
     }
-    onCraete(state.author, state.content, state.emotion);
+    onCreate(state.author, state.content, state.emotion);
     alert("저장 성공");
 
     //저장 성공후 웹 화면 초기화를 위해 +추가
